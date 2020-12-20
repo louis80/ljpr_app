@@ -1,5 +1,9 @@
 .style-left-bar-not-collapsed{
-  width: 256px;
+  width: 256px !important;
+}
+
+.style-left-bar-collapsed{
+  width: 80px !important;
 }
 
 .prism-code{

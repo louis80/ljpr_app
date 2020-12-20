@@ -51,8 +51,10 @@ class LeftBar extends React.Component {
 
   render() {
     return (
-      <div className={`${this.state.collapsed ? '' : 'style-left-bar-not-collapsed'}`}  style={{backgroundColor:'rgb(0, 21, 41)'}}>
-        <Button type="primary" onClick={this.toggleCollapsed} style={{ margin:8, marginLeft: 16}}>
+      // style={{backgroundColor:'rgb(0, 21, 41)'}}
+      <div className={`${this.state.collapsed ? 'style-left-bar-collapsed' : 'style-left-bar-not-collapsed'}`} style={{position:'static',height:'100%'}}>
+      <div className={`${this.state.collapsed ? 'style-left-bar-collapsed' : 'style-left-bar-not-collapsed'}`} style={{height:'100%', position:'fixed', backgroundColor:'rgb(0, 21, 41)'}}>
+        <Button type="primary" onClick={this.toggleCollapsed} style={{ margin:8, marginLeft: 16, backgroundColor:'rgb(0, 21, 41)'}}>
           {React.createElement(this.state.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined)}
         </Button>
         <Menu
@@ -60,6 +62,7 @@ class LeftBar extends React.Component {
           mode="inline"
           theme="dark"
           inlineCollapsed={this.state.collapsed}
+          style={{height:'100%'}}
         >
           <Menu.Item key="1" icon={<FileTextOutlined />}>
             <Link to="/">
@@ -109,6 +112,7 @@ class LeftBar extends React.Component {
             </SubMenu>
           </SubMenu>
         </Menu>
+      </div>
       </div>
     );
   }

@@ -1,6 +1,44 @@
 import React, {Component} from 'react';
 import Chart from "chart.js";
 import 'chartjs-plugin-annotation';
+import * as ChartAnnotation from 'chartjs-plugin-annotation';
+
+
+var annotations = [
+  {
+    type: 'line',
+    id: 'vline' ,
+    mode: 'vertical',
+    scaleID: 'x-axis-0',
+    value: "2019 T4",
+    borderColor: 'rgba(0,0,0,0)',
+    borderWidth: 0,
+    label: {
+      yAdjust: -100,
+       enabled: true,
+       backgroundColor: '#1DE9B6',
+       position: "center",
+       content: '- 39% sur un an '
+    }
+  },
+  {
+    type: 'line',
+    mode: 'vertical',
+    scaleID: 'x-axis-0',
+    value: "2019 T4",
+    borderColor: 'rgba(0,0,0,0)',
+    borderWidth: 0,
+    label: {
+      yAdjust: 120,
+      backgroundColor: '#7D204C',
+      enabled: true,
+      position: "center",
+      content: '- 43% sur un an '
+    }
+  },
+
+];
+
 
 class CommercialisationLogementsNeufs extends Component {
     chartRef = React.createRef();
@@ -8,6 +46,7 @@ class CommercialisationLogementsNeufs extends Component {
         const myChartRef = this.chartRef.current.getContext("2d");
         new Chart(myChartRef, {
             type: "bar",
+            plugins: [ChartAnnotation],
             data: {
                 //Bring in data
                 labels: [
@@ -18,6 +57,82 @@ class CommercialisationLogementsNeufs extends Component {
                          "2020 T1", "2020 T2", "2020 T3"
                 ],
                 datasets: [
+
+                  {
+                    fill: false,
+                    borderColor: "rgba(0,0,0,0)", 
+                    label: "label1",
+                    yAxisID: 'A',
+                    type: 'line',
+                    datalabels: {
+                      display: true
+                    },
+                    data: [
+                      {
+                        x: "2019 T4",
+                        y: 12000 
+                      }
+                    ]
+                  },
+                  {
+                    fill: false,
+                    borderColor: "rgba(0,0,0,0)", 
+                    label: "label2",
+                    yAxisID: 'A',
+                    type: 'line',
+                    datalabels: {
+                      display: true
+                    },
+                    data: [
+                      {
+                        x: "2019 T4",
+                        y: 45000 
+                      }
+                    ]
+                  },
+              
+                  {
+                    fill: false,
+                    borderColor: "silver", 
+                    label: "line1",
+                    yAxisID: 'A',
+                    type: 'line',
+                    datalabels: {
+                      display: true
+                    },
+                    data: [
+                      {
+                        x: "2019 T2",
+                        y: 12000 
+                      }, {
+                        x: "2020 T2",
+                        y: 12000  
+                      }
+                    ]
+                  },
+
+                              
+                  {
+                    fill: false,
+                    borderColor: "silver", 
+                    label: "line2",
+                    yAxisID: 'A',
+                    type: 'line',
+                    datalabels: {
+                      display: true
+                    },
+                    data: [
+                      {
+                        x: "2019 T2",
+                        y: 45000 
+                      }, {
+                        x: "2020 T2",
+                        y: 45000  
+                      }
+                    ]
+                  },
+
+
                   {
                     fill: false,
                     borderColor: "#1DE9B6", 
@@ -44,6 +159,48 @@ class CommercialisationLogementsNeufs extends Component {
                 ]
             },
             options: {
+              hover: {animationDuration: 0}, 
+              animation: {
+                duration: 0,
+               
+                onComplete: function () {
+                    // render the value of the chart above the bar
+                    var ctx = this.chart.ctx;
+                    //ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, 'normal', Chart.defaults.global.defaultFontFamily);
+                    
+                    ctx.font = "bold 12px 'Helvetica Neue', Helvetica, Arial, sans-serif";
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'bottom';
+                    this.data.datasets.forEach(function (dataset) {
+                        if ( dataset.data.length === 1 && dataset.data[0].y === 12000){
+                          var model = dataset._meta[Object.keys(dataset._meta)[0]].data[0]._model;
+                          ctx.fillStyle = '#7D204C';
+                          ctx.fillText('- 43% sur un an ', model.x, model.y - 5);
+                          //for (var i = 0; i < dataset.data.length; i++) {
+                          //    var model = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._model;
+                          //    ctx.fillText('- 43% sur un an ', model.x, model.y - 5);
+                          //}
+                        }else if(dataset.data.length === 1 && dataset.data[0].y === 45000){
+                          ctx.fillStyle = '#1DE9B6';
+                          var model = dataset._meta[Object.keys(dataset._meta)[0]].data[0]._model;
+                          ctx.fillText('- 39% sur un an ', model.x, model.y - 5);
+
+                        }
+                    });
+                    // ctx.style.backgroundColor = '#7D204C';
+                }},
+
+              tooltips: {
+                mode: 'index',
+                intersect: true
+              },
+              legend: {
+                labels: {
+                    filter: function(item, chart) {
+                      return !item.text.includes('line1') && !item.text.includes('line2') && !item.text.includes('label1');
+                    }
+                }
+              },
               scales: {
                 xAxes: [{
                   gridLines: {
@@ -82,47 +239,16 @@ class CommercialisationLogementsNeufs extends Component {
                   }
                 }]
               },
-              annotation: {
-                annotations: [{
-                  type: 'line',
-                  mode: 'horizontal',
-                  scaleID: 'y-axis-0',
-                  value: 17000,
-                  borderColor: 'white',
-                  borderWidth: 0,
-                  label: {
-                    xAdjust: 50,
-                    fontSize: 14,
-                    fontColor: '#7D204C',
-                    backgroundColor: 'silver',
-                    content: "-46% sur un an ",
-                    enabled: true,
-                    position: 'right'
-                  }
-                },
-                {
-                  type: 'line',
-                  mode: 'horizontal',
-                  scaleID: 'y-axis-0',
-                  value: 38000,
-                  borderColor: 'white',
-                  borderWidth: 0,
-                  label: {
-                    xAdjust: 50,
-                    fontSize: 14,
-                    fontColor: '#1DE9B6',
-                    backgroundColor: 'silver',
-                    content: "-41% sur un an ",
-                    enabled: true,
-                    position: 'right'
-                  }
-                }],
-                drawTime: 'beforeDatasetsDraw'
-              }
-            },
+              //annotation: {
+              //  drawTime: "afterDraw", 
+              //  annotations: annotations
+              //},
+             
+            }
             
         });
     }
+    
     render() {
         return (
             <div>

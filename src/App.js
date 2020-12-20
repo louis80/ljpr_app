@@ -21,11 +21,11 @@ function ShowDiv() {
 class App extends React.Component {
   render() {
     return (
-      <div className='d-flex' style={{height:'100%'}}> 
+      <div className='d-flex' style={{height:'100%', width:'100%'}}> 
       <Router>
         <LeftBar/> 
-        <div style={{height:'100%', width:'100%'}}>
-          <div className='' style={{backgroundColor:'#333', height:'52px', width:'100%'}}>  </div>
+        <div style={{height:'100%', flexGrow: "100"}}>
+          <div className='' style={{backgroundColor:'#333', height:'48px', width:'100%'}}>  </div>
           <Route exact path="/" component={LandingPageArticle} />
           <Route exact path="/article/impact-du-covid-sur-immobilier" component={CovidImmo} />
 
