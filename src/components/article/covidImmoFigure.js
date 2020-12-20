@@ -197,7 +197,7 @@ class CommercialisationLogementsNeufs extends Component {
               legend: {
                 labels: {
                     filter: function(item, chart) {
-                      return !item.text.includes('line1') && !item.text.includes('line2') && !item.text.includes('label1');
+                      return !item.text.includes('line1') && !item.text.includes('line2') && !item.text.includes('label1') && !item.text.includes('label2');
                     }
                 }
               },
@@ -239,10 +239,10 @@ class CommercialisationLogementsNeufs extends Component {
                   }
                 }]
               },
-              //annotation: {
-              //  drawTime: "afterDraw", 
-              //  annotations: annotations
-              //},
+              annotation: {
+                drawTime: "afterDraw", 
+                annotations: annotations
+              },
              
             }
             
